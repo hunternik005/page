@@ -133,25 +133,22 @@
 
             <!-- Video Player (Rutube Embed) -->
             <!-- 
-               FIX MOBILE CHROME CLICK:
-               1. transform-gpu и translate-z-0: Форсируют аппаратное ускорение, чинят баг с кликом внутри overflow:hidden.
-               2. z-20: Поднимает слой выше.
-               3. Убраны любые hover/active классы с контейнера, чтобы избежать перерисовки при тапе.
+               UPDATED FOR FULLSCREEN MOBILE:
+               1. Убрали атрибут 'playsinline': Это заставит iPhone открывать нативный плеер во весь экран при воспроизведении.
+               2. Атрибут 'allow' включает 'fullscreen'.
             -->
-            <div id="video-wrapper" class="relative z-20 w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden transform-gpu translate-z-0">
+            <div id="video-wrapper" class="relative z-20 w-full aspect-video bg-black shadow-glow-teal rounded-xl">
                 
-                <!-- Rutube Iframe -->
                 <iframe 
                     width="100%" 
                     height="100%" 
                     src="https://rutube.ru/play/embed/b8a8a801a9736b2e5c5303816bfe17c6/?p=ZXvMMlEJuTOVdrYyIJ9PLg" 
                     frameBorder="0" 
-                    allow="clipboard-write; autoplay; fullscreen; picture-in-picture" 
+                    allow="clipboard-write; autoplay; fullscreen; picture-in-picture; encrypted-media" 
                     webkitAllowFullScreen 
                     mozallowfullscreen 
                     allowFullScreen 
-                    playsinline 
-                    class="w-full h-full object-cover">
+                    class="w-full h-full object-cover rounded-xl border border-gray-700">
                 </iframe>
 
             </div>
