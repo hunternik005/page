@@ -100,6 +100,24 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* NEW: Class for delayed appearance */
+        .fade-in-delayed {
+            opacity: 0; /* Initially hidden */
+            animation: fadeInUpDelayed 1s ease-out forwards;
+            animation-delay: 30s; /* Increased delay to 30 seconds */
+        }
+
+        @keyframes fadeInUpDelayed {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-300 antialiased leading-relaxed overflow-x-hidden relative">
@@ -123,12 +141,7 @@
             </p>
 
             <!-- Video Player: VK VIDEO INTEGRATION -->
-            <!-- 
-               Используем VK Video.
-               Механика та же: клик по обложке -> замена на iframe VK.
-               VK ID: video-154084586_456239020 (oid=-154084586, id=456239020)
-            -->
-            <div id="video-wrapper" class="relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden cursor-pointer" onclick="loadVideo(this)">
+            <div id="video-wrapper-vk" class="relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden cursor-pointer" onclick="loadVkVideo(this)">
                 
                 <!-- CONTENT TO BE REPLACED START -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-black">
@@ -153,8 +166,12 @@
 
             </div>
 
-            <!-- Primary CTA Button -->
-            <div class="pt-2 md:pt-4">
+            <!-- Primary CTA Button (With Delay and Extra Spacing) -->
+            <!-- 
+                mt-8 md:mt-12: Увеличенный отступ сверху, чтобы отделить от видео.
+                fade-in-delayed: Класс для появления с задержкой (см. CSS выше).
+            -->
+            <div class="mt-8 md:mt-12 fade-in-delayed">
                 <a href="#" class="btn-shine flex flex-col items-center justify-center w-full md:w-auto bg-orange-500 active:bg-orange-600 hover:bg-orange-600 text-white font-bold text-lg md:text-xl py-4 md:py-5 px-6 md:px-8 rounded-lg shadow-lg transform transition active:scale-95 hover:-translate-y-1 hover:shadow-orange-500/20">
                     <span class="text-center">👉 ПОЛУЧИТЬ ПОШАГОВУЮ СТРАТЕГИЮ ЛЕЧЕНИЯ</span>
                     <span class="text-xs md:text-sm font-normal text-orange-100 mt-1 opacity-90">Переход в Telegram-бот</span>
@@ -169,7 +186,8 @@
                     В этом видео я вскрываю скрытые причины:
                 </h3>
             </div>
-
+            
+            <!-- ... existing bullets code ... -->
             <ul class="space-y-5 md:space-y-6">
                 <li class="flex items-start gap-3 md:gap-4">
                     <div class="flex-shrink-0 mt-1">
@@ -287,23 +305,18 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // 2. VIDEO LOADER - VK VIDEO VERSION
-        function loadVideo(container) {
+        // 2. VIDEO LOADER - VK VIDEO VERSION (FORCED)
+        function loadVkVideo(container) {
             // Если iframe уже есть, ничего не делаем
             if (container.querySelector('iframe')) return;
 
-            // Параметры видео из ссылки https://vkvideo.ru/video-154084586_456239020
-            // oid (owner id) = -154084586 (минус, так как это сообщество)
-            // id = 456239020
+            // VK Параметры (жестко заданы)
             const oid = '-154084586';
             const id = '456239020';
             
-            // Формируем HTML для VK плеера
-            // hd=2 включает высокое качество по умолчанию
-            // autoplay=1 запускает видео (если браузер разрешит)
             const iframeHTML = `
                 <iframe 
-                    src="https://vk.com/video_ext.php?oid=${oid}&id=${id}&hd=2&autoplay=1" 
+                    src="https://vk.com/video_ext.php?oid=${oid}&id=${id}&hd=2&autoplay=1&js_api=1" 
                     width="100%" 
                     height="100%" 
                     frameborder="0" 
@@ -315,13 +328,8 @@
                 ></iframe>
             `;
 
-            // 1. Вставляем плеер
             container.innerHTML = iframeHTML;
-            
-            // 2. Убираем курсор
             container.classList.remove('cursor-pointer');
-            
-            // 3. Удаляем обработчик, чтобы не срабатывал повторно
             container.onclick = null;
         }
 
