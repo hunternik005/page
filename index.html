@@ -122,19 +122,17 @@
                 Вся правда о висцеральном жире. Посмотри это короткое видео (8 мин), чтобы понять, какая <span class="text-white font-semibold whitespace-nowrap">«бомба замедленного действия»</span> тикает внутри твоего организма.
             </p>
 
-            <!-- Video Player: ULTIMATE FIX -->
+            <!-- Video Player: VK VIDEO INTEGRATION -->
             <!-- 
-               Механика:
-               1. Контейнер с обложкой.
-               2. При клике (onclick) вызывается loadVideo.
-               3. Скрипт ПОЛНОСТЬЮ заменяет содержимое div на iframe.
-               4. Убираются классы, которые могут мешать клику на мобильных.
+               Используем VK Video.
+               Механика та же: клик по обложке -> замена на iframe VK.
+               VK ID: video-154084586_456239020 (oid=-154084586, id=456239020)
             -->
             <div id="video-wrapper" class="relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden cursor-pointer" onclick="loadVideo(this)">
                 
                 <!-- CONTENT TO BE REPLACED START -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-black">
-                    <!-- Thumbnail Background -->
+                    <!-- Placeholder Thumbnail -->
                     
                     <!-- Play Button -->
                     <div class="relative z-10">
@@ -289,23 +287,27 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // 2. VIDEO LOADER - DIRECT REPLACEMENT METHOD
+        // 2. VIDEO LOADER - VK VIDEO VERSION
         function loadVideo(container) {
-            // Если видео уже загружено (проверяем по наличию iframe), выходим
+            // Если iframe уже есть, ничего не делаем
             if (container.querySelector('iframe')) return;
 
-            // ID видео и параметры
-            const videoId = 'b8a8a801a9736b2e5c5303816bfe17c6'; 
+            // Параметры видео из ссылки https://vkvideo.ru/video-154084586_456239020
+            // oid (owner id) = -154084586 (минус, так как это сообщество)
+            // id = 456239020
+            const oid = '-154084586';
+            const id = '456239020';
             
-            // Создаем HTML строку для iframe - это надежнее, чем createElement в сложных случаях
-            // Добавляем playsinline на всякий случай для совместимости, но fullscreen разрешен
+            // Формируем HTML для VK плеера
+            // hd=2 включает высокое качество по умолчанию
+            // autoplay=1 запускает видео (если браузер разрешит)
             const iframeHTML = `
                 <iframe 
-                    src="https://rutube.ru/play/embed/${videoId}?autoplay=1&skinColor=F97316" 
+                    src="https://vk.com/video_ext.php?oid=${oid}&id=${id}&hd=2&autoplay=1" 
                     width="100%" 
                     height="100%" 
                     frameborder="0" 
-                    allow="clipboard-write; autoplay; fullscreen; encrypted-media" 
+                    allow="clipboard-write; autoplay; fullscreen; picture-in-picture; encrypted-media" 
                     webkitAllowFullScreen 
                     mozallowfullscreen 
                     allowFullScreen 
@@ -313,18 +315,13 @@
                 ></iframe>
             `;
 
-            // 1. Полностью очищаем контейнер
+            // 1. Вставляем плеер
             container.innerHTML = iframeHTML;
             
-            // 2. Убираем pointer-events блокировки и курсор
+            // 2. Убираем курсор
             container.classList.remove('cursor-pointer');
             
-            // 3. ВАЖНО: Убираем overflow:hidden и скругление на момент воспроизведения, 
-            // если мобильный браузер глючит с обрезкой видео (опционально, но помогает)
-            // container.style.borderRadius = '0'; 
-            // container.style.overflow = 'visible';
-            
-            // 4. Удаляем обработчик клика
+            // 3. Удаляем обработчик, чтобы не срабатывал повторно
             container.onclick = null;
         }
 
