@@ -132,11 +132,15 @@
             </p>
 
             <!-- Video Player (Rutube Embed) -->
-            <!-- FIX: Убраны классы active:scale, hover:scale и transition, которые перехватывали клик на мобильных -->
-            <div id="video-wrapper" class="relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden">
+            <!-- 
+               FIX MOBILE CHROME CLICK:
+               1. transform-gpu и translate-z-0: Форсируют аппаратное ускорение, чинят баг с кликом внутри overflow:hidden.
+               2. z-20: Поднимает слой выше.
+               3. Убраны любые hover/active классы с контейнера, чтобы избежать перерисовки при тапе.
+            -->
+            <div id="video-wrapper" class="relative z-20 w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden transform-gpu translate-z-0">
                 
                 <!-- Rutube Iframe -->
-                <!-- FIX: Добавлен атрибут playsinline для лучшей поддержки мобильных -->
                 <iframe 
                     width="100%" 
                     height="100%" 
