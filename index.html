@@ -131,26 +131,23 @@
                 Вся правда о висцеральном жире. Посмотри это короткое видео (8 мин), чтобы понять, какая <span class="text-white font-semibold whitespace-nowrap">«бомба замедленного действия»</span> тикает внутри твоего организма.
             </p>
 
-            <!-- Video Player (Rutube Embed) -->
+            <!-- Video Player (Rutube Embed - Final Stable Version) -->
             <!-- 
-               UPDATED LINK:
-               Использован чистый ID видео b8a8a801a9736b2e5c5303816bfe17c6 без приватных токенов.
-               Если видео имеет статус "Доступ по ссылке" или "Публичный", этот формат гарантированно работает на мобильных.
+               Используем ID из вашей ссылки: b8a8a801a9736b2e5c5303816bfe17c6
+               Максимально упрощенная структура для гарантированного клика на мобильных.
             -->
-            <div id="video-wrapper" class="relative z-20 w-full aspect-video bg-black shadow-glow-teal rounded-xl">
-                
+            <div class="w-full aspect-video bg-black shadow-glow-teal rounded-xl border border-gray-700 overflow-hidden relative">
                 <iframe 
                     width="100%" 
                     height="100%" 
                     src="https://rutube.ru/play/embed/b8a8a801a9736b2e5c5303816bfe17c6" 
                     frameBorder="0" 
-                    allow="clipboard-write; autoplay; fullscreen; picture-in-picture; encrypted-media" 
+                    allow="clipboard-write; autoplay; fullscreen" 
                     webkitAllowFullScreen 
                     mozallowfullscreen 
                     allowFullScreen 
-                    class="w-full h-full object-cover rounded-xl border border-gray-700">
+                    class="absolute inset-0 w-full h-full">
                 </iframe>
-
             </div>
 
             <!-- Primary CTA Button -->
