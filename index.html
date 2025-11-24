@@ -122,38 +122,36 @@
                 Вся правда о висцеральном жире. Посмотри это короткое видео (8 мин), чтобы понять, какая <span class="text-white font-semibold whitespace-nowrap">«бомба замедленного действия»</span> тикает внутри твоего организма.
             </p>
 
-            <!-- Video Player: FACADE PATTERN (CLICK-TO-LOAD) -->
+            <!-- Video Player: ULTIMATE FIX -->
             <!-- 
-               Контейнер для видео. 
-               Изначально содержит обложку.
-               При клике загружает iframe.
+               Механика:
+               1. Контейнер с обложкой.
+               2. При клике (onclick) вызывается loadVideo.
+               3. Скрипт ПОЛНОСТЬЮ заменяет содержимое div на iframe.
+               4. Убираются классы, которые могут мешать клику на мобильных.
             -->
-            <div id="video-placeholder" class="relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden group cursor-pointer transform-gpu" onclick="loadVideo(this)">
+            <div id="video-wrapper" class="relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden cursor-pointer" onclick="loadVideo(this)">
                 
-                <!-- 1. Thumbnail Background (Gradient) -->
-                <div id="video-thumbnail" class="absolute inset-0 bg-gradient-to-br from-gray-800 to-black pointer-events-none transition-opacity duration-300">
-                     <!-- Декоративный фон -->
-                </div>
-                
-                <!-- 2. Play Button Container -->
-                <div id="video-play-btn" class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none transition-opacity duration-300">
-                    <div class="relative">
+                <!-- CONTENT TO BE REPLACED START -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-black">
+                    <!-- Thumbnail Background -->
+                    
+                    <!-- Play Button -->
+                    <div class="relative z-10">
                          <div class="absolute inset-0 bg-orange-500 rounded-full opacity-30 animate-ping"></div>
-                         <div class="relative w-16 h-16 md:w-20 md:h-20 bg-orange-500 rounded-full flex items-center justify-center shadow-lg group-hover:bg-orange-600 transition-all duration-300">
+                         <div class="relative w-16 h-16 md:w-20 md:h-20 bg-orange-500 rounded-full flex items-center justify-center shadow-lg transition-transform duration-300 hover:scale-110">
                             <svg class="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                          </div>
                     </div>
-                </div>
 
-                <!-- 3. Text Hint -->
-                <div id="video-hint" class="absolute bottom-6 w-full text-center text-white/80 text-xs md:text-sm font-medium tracking-wider uppercase z-10 pointer-events-none transition-opacity duration-300">
-                    Нажмите для просмотра
+                    <!-- Text Hint -->
+                    <div class="mt-4 text-white/80 text-xs md:text-sm font-medium tracking-wider uppercase z-10">
+                        Нажмите для просмотра
+                    </div>
                 </div>
-
-                <!-- Контейнер, куда будет вставлен iframe -->
-                <div id="iframe-container" class="absolute inset-0 w-full h-full z-20 bg-transparent"></div>
+                <!-- CONTENT TO BE REPLACED END -->
 
             </div>
 
@@ -291,56 +289,42 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // 2. VIDEO FACADE LOGIC
+        // 2. VIDEO LOADER - DIRECT REPLACEMENT METHOD
         function loadVideo(container) {
-            // Предотвращаем повторный запуск, если видео уже загружено
-            if (container.classList.contains('video-loaded')) return;
-            
+            // Если видео уже загружено (проверяем по наличию iframe), выходим
+            if (container.querySelector('iframe')) return;
+
+            // ID видео и параметры
             const videoId = 'b8a8a801a9736b2e5c5303816bfe17c6'; 
             
-            // Получаем элементы интерфейса
-            const thumbnail = document.getElementById('video-thumbnail');
-            const playBtn = document.getElementById('video-play-btn');
-            const hint = document.getElementById('video-hint');
-            const iframeContainer = document.getElementById('iframe-container');
+            // Создаем HTML строку для iframe - это надежнее, чем createElement в сложных случаях
+            // Добавляем playsinline на всякий случай для совместимости, но fullscreen разрешен
+            const iframeHTML = `
+                <iframe 
+                    src="https://rutube.ru/play/embed/${videoId}?autoplay=1&skinColor=F97316" 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    allow="clipboard-write; autoplay; fullscreen; encrypted-media" 
+                    webkitAllowFullScreen 
+                    mozallowfullscreen 
+                    allowFullScreen 
+                    style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"
+                ></iframe>
+            `;
 
-            // Скрываем обложку (делаем прозрачной)
-            if (thumbnail) thumbnail.style.opacity = '0';
-            if (playBtn) playBtn.style.opacity = '0';
-            if (hint) hint.style.opacity = '0';
-
-            // Создаем iframe
-            // ВАЖНО: allow="autoplay" и src="...?autoplay=1"
-            const iframe = document.createElement('iframe');
-            iframe.setAttribute('src', `https://rutube.ru/play/embed/${videoId}?autoplay=1&skinColor=F97316`);
-            iframe.setAttribute('width', '100%');
-            iframe.setAttribute('height', '100%');
-            iframe.setAttribute('frameborder', '0');
-            iframe.setAttribute('allow', 'clipboard-write; autoplay; fullscreen; encrypted-media');
-            iframe.setAttribute('webkitAllowFullScreen', '');
-            iframe.setAttribute('mozallowfullscreen', '');
-            iframe.setAttribute('allowFullScreen', '');
-            // Убираем playsinline, чтобы на iPhone открывалось во весь экран
-            // iframe.setAttribute('playsinline', ''); 
+            // 1. Полностью очищаем контейнер
+            container.innerHTML = iframeHTML;
             
-            iframe.style.width = '100%';
-            iframe.style.height = '100%';
-            iframe.style.position = 'absolute';
-            iframe.style.top = '0';
-            iframe.style.left = '0';
-            
-            // Очищаем контейнер и вставляем iframe
-            iframeContainer.innerHTML = '';
-            iframeContainer.appendChild(iframe);
-
-            // Помечаем контейнер как загруженный
-            container.classList.add('video-loaded');
-            
-            // Убираем pointer-events с контейнера, чтобы клики шли прямо в iframe
-            // Но оставляем сам контейнер, чтобы он держал размеры
+            // 2. Убираем pointer-events блокировки и курсор
             container.classList.remove('cursor-pointer');
             
-            // Удаляем onclick атрибут, чтобы не срабатывал повторно
+            // 3. ВАЖНО: Убираем overflow:hidden и скругление на момент воспроизведения, 
+            // если мобильный браузер глючит с обрезкой видео (опционально, но помогает)
+            // container.style.borderRadius = '0'; 
+            // container.style.overflow = 'visible';
+            
+            // 4. Удаляем обработчик клика
             container.onclick = null;
         }
 
