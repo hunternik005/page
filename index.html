@@ -13,7 +13,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Tailwind Configuration for Specific Palette -->
+    <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -23,24 +23,24 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     screens: {
-                        'xs': '375px', // Custom breakpoint for smaller mobiles
+                        'xs': '375px',
                     },
                     colors: {
                         gray: {
-                            900: '#111827', // Deep Gray (Background)
-                            800: '#1F2937', // Graphite (Cards)
-                            700: '#374151', // Steel (Borders)
-                            300: '#D1D5DB', // Body Text
+                            900: '#111827',
+                            800: '#1F2937',
+                            700: '#374151',
+                            300: '#D1D5DB',
                         },
                         orange: {
-                            500: '#F97316', // Brand Orange
-                            600: '#EA580C', // Dark Orange Hover
+                            500: '#F97316',
+                            600: '#EA580C',
                         },
                         teal: {
-                            500: '#14B8A6', // Special Accent
+                            500: '#14B8A6',
                         },
                         green: {
-                            500: '#22C55E', // Success
+                            500: '#22C55E',
                         }
                     },
                     boxShadow: {
@@ -68,7 +68,6 @@
     </script>
 
     <style>
-        /* Custom Utilities */
         .video-overlay {
             background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
         }
@@ -92,8 +91,6 @@
             20% { left: 200%; }
             100% { left: 200%; }
         }
-
-        /* Scroll Reveal Utility Classes */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -107,13 +104,9 @@
 </head>
 <body class="bg-gray-900 text-gray-300 antialiased leading-relaxed overflow-x-hidden relative">
 
-    <!-- Ambient Background Effects (Optimized for Mobile) -->
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <!-- Orange Glow Top Right -->
         <div class="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-orange-500 rounded-full mix-blend-multiply filter blur-3xl opacity-5 md:opacity-10 animate-blob"></div>
-        <!-- Teal Glow Bottom Left -->
         <div class="absolute bottom-0 left-0 w-64 h-64 md:w-96 md:h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-5 md:opacity-10 animate-blob animation-delay-2000"></div>
-        <!-- Center Glow -->
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 bg-gray-700 rounded-full mix-blend-multiply filter blur-3xl opacity-5 md:opacity-10 animate-blob animation-delay-4000"></div>
     </div>
 
@@ -121,33 +114,44 @@
 
         <!-- 1. HERO SECTION -->
         <section class="text-center space-y-6 md:space-y-8 reveal">
-            <!-- Headline -->
             <h1 class="text-2xl xs:text-3xl md:text-5xl font-black text-white uppercase tracking-tight leading-tight">
                 Почему живот не уходит, <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-400 block sm:inline">даже если ты качаешь пресс</span> и сидишь на диетах?
             </h1>
             
-            <!-- Subheadline -->
             <p class="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-2 md:px-0">
                 Вся правда о висцеральном жире. Посмотри это короткое видео (8 мин), чтобы понять, какая <span class="text-white font-semibold whitespace-nowrap">«бомба замедленного действия»</span> тикает внутри твоего организма.
             </p>
 
-            <!-- Video Player (Rutube Embed - Final Stable Version) -->
+            <!-- Video Player: FACADE PATTERN (CLICK-TO-LOAD) -->
             <!-- 
-               Используем ID из вашей ссылки: b8a8a801a9736b2e5c5303816bfe17c6
-               Максимально упрощенная структура для гарантированного клика на мобильных.
+               Это решение проблемы мобильных кликов.
+               Сначала показываем DIV (обложку). Он гарантированно кликабелен.
+               При клике JS заменяет этот DIV на iframe.
             -->
-            <div class="w-full aspect-video bg-black shadow-glow-teal rounded-xl border border-gray-700 overflow-hidden relative">
-                <iframe 
-                    width="100%" 
-                    height="100%" 
-                    src="https://rutube.ru/play/embed/b8a8a801a9736b2e5c5303816bfe17c6" 
-                    frameBorder="0" 
-                    allow="clipboard-write; autoplay; fullscreen" 
-                    webkitAllowFullScreen 
-                    mozallowfullscreen 
-                    allowFullScreen 
-                    class="absolute inset-0 w-full h-full">
-                </iframe>
+            <div id="video-placeholder" class="relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden group cursor-pointer" onclick="loadVideo(this)">
+                
+                <!-- 1. Thumbnail Background (Gradient + Placeholder) -->
+                <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-black">
+                     <!-- Optional: You can put an <img> here if you have a thumbnail URL -->
+                </div>
+                
+                <!-- 2. Play Button -->
+                <div class="absolute inset-0 flex items-center justify-center z-10">
+                    <div class="relative">
+                         <div class="absolute inset-0 bg-orange-500 rounded-full opacity-30 animate-ping"></div>
+                         <div class="relative w-16 h-16 md:w-20 md:h-20 bg-orange-500 rounded-full flex items-center justify-center shadow-lg group-hover:bg-orange-600 transition-all duration-300">
+                            <svg class="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- 3. Text Hint -->
+                <div class="absolute bottom-6 w-full text-center text-white/80 text-xs md:text-sm font-medium tracking-wider uppercase z-10 pointer-events-none">
+                    Нажмите для просмотра
+                </div>
+
             </div>
 
             <!-- Primary CTA Button -->
@@ -159,7 +163,7 @@
             </div>
         </section>
 
-        <!-- 2. BULLETS SECTION (Animations enabled for Mobile) -->
+        <!-- 2. BULLETS SECTION -->
         <section class="reveal group bg-gray-800 border border-gray-700 rounded-2xl p-5 sm:p-8 md:p-10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-teal-500/50 hover:shadow-glow-teal active:scale-[0.98] cursor-default">
             <div class="flex items-center justify-center mb-6 md:mb-8">
                 <h3 class="text-lg md:text-2xl font-bold text-white text-center uppercase border-b-2 border-teal-500 pb-2 inline-block">
@@ -168,55 +172,36 @@
             </div>
 
             <ul class="space-y-5 md:space-y-6">
-                <!-- Bullet 1 -->
                 <li class="flex items-start gap-3 md:gap-4">
                     <div class="flex-shrink-0 mt-1">
-                        <!-- X Icon -->
-                        <svg class="w-5 h-5 md:w-6 md:h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
+                        <svg class="w-5 h-5 md:w-6 md:h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </div>
                     <div>
                         <strong class="text-white block text-base md:text-lg mb-0.5 md:mb-1">Почему диеты не работают</strong>
                         <span class="text-sm md:text-base text-gray-300">Как дефицит калорий может увеличить твой живот из-за <span class="text-teal-500">кортизола</span>.</span>
                     </div>
                 </li>
-
-                <!-- Bullet 2 -->
                 <li class="flex items-start gap-3 md:gap-4">
                     <div class="flex-shrink-0 mt-1">
-                        <!-- Virus/Bio Icon -->
-                        <svg class="w-5 h-5 md:w-6 md:h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 md:w-6 md:h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
                     </div>
                     <div>
                         <strong class="text-white block text-base md:text-lg mb-0.5 md:mb-1">Висцеральный жир vs Подкожный</strong>
                         <span class="text-sm md:text-base text-gray-300">Почему жир вокруг органов — это не просто эстетика, а отдельный гормональный орган, который <span class="text-orange-500">убивает твой тестостерон</span>.</span>
                     </div>
                 </li>
-
-                <!-- Bullet 3 -->
                 <li class="flex items-start gap-3 md:gap-4">
                     <div class="flex-shrink-0 mt-1">
-                        <!-- Brain Icon -->
-                        <svg class="w-5 h-5 md:w-6 md:h-6 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 md:w-6 md:h-6 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
                     </div>
                     <div>
                         <strong class="text-white block text-base md:text-lg mb-0.5 md:mb-1">Ловушка Мозга</strong>
                         <span class="text-sm md:text-base text-gray-300">Почему твой организм включает «аварийный режим» и запасает жир именно на талии.</span>
                     </div>
                 </li>
-
-                <!-- Bullet 4 -->
                 <li class="flex items-start gap-3 md:gap-4">
                     <div class="flex-shrink-0 mt-1">
-                        <!-- Chart Down Icon -->
-                        <svg class="w-5 h-5 md:w-6 md:h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
-                        </svg>
+                        <svg class="w-5 h-5 md:w-6 md:h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
                     </div>
                     <div>
                         <strong class="text-white block text-base md:text-lg mb-0.5 md:mb-1">Инсулиновый блок</strong>
@@ -226,7 +211,7 @@
             </ul>
         </section>
 
-        <!-- 3. THE SOLUTION SECTION (Animations enabled for Mobile) -->
+        <!-- 3. THE SOLUTION SECTION -->
         <section class="reveal text-center space-y-6 md:space-y-8">
             <div class="space-y-4">
                 <p class="text-gray-300 text-base md:text-lg px-2">
@@ -242,7 +227,6 @@
                 </div>
             </div>
 
-            <!-- Simple List -->
             <div class="inline-block text-left mx-auto px-2">
                 <ul class="space-y-3 text-gray-300 text-sm md:text-lg">
                     <li class="flex items-center gap-3">
@@ -265,7 +249,7 @@
             </p>
         </section>
 
-        <!-- 4. FOOTER / FINAL CTA -->
+        <!-- 4. FOOTER -->
         <footer class="reveal text-center pt-8 border-t border-gray-800">
             <h4 class="text-lg md:text-xl text-white font-semibold mb-6 px-2">
                 Не жди, пока висцеральный жир разрушит твое здоровье окончательно. <br class="hidden md:block">
@@ -288,7 +272,6 @@
 
     </main>
 
-    <!-- Interactive Scripts -->
     <script>
         // 1. Scroll Reveal Logic
         function reveal() {
@@ -302,13 +285,35 @@
                 }
             }
         }
-        // Initial check and event listener
         window.addEventListener("scroll", reveal);
-        // Trigger once on load
         reveal();
 
-        // 2. Video Player Logic (REMOVED - Rutube controls itself)
-        // The iframe handles playback controls automatically.
+        // 2. VIDEO FACADE LOGIC (THE FIX)
+        function loadVideo(element) {
+            // ID видео из вашей ссылки
+            const videoId = 'b8a8a801a9736b2e5c5303816bfe17c6'; 
+            
+            // Создаем iframe программно. Это обходит проблему мобильного клика.
+            // allow="autoplay" критически важен.
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('src', `https://rutube.ru/play/embed/${videoId}?autoplay=1`);
+            iframe.setAttribute('width', '100%');
+            iframe.setAttribute('height', '100%');
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allow', 'clipboard-write; autoplay; fullscreen');
+            iframe.setAttribute('webkitAllowFullScreen', '');
+            iframe.setAttribute('mozallowfullscreen', '');
+            iframe.setAttribute('allowFullScreen', '');
+            iframe.classList.add('w-full', 'h-full', 'object-cover');
+
+            // Очищаем контейнер от картинки и кнопки Play
+            element.innerHTML = '';
+            // Вставляем iframe
+            element.appendChild(iframe);
+            // Убираем курсор-указатель, так как видео уже загружено
+            element.classList.remove('cursor-pointer');
+            element.onclick = null;
+        }
 
         // 3. Button Simulation
         document.querySelectorAll('a').forEach(link => {
