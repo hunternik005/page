@@ -133,6 +133,21 @@
         .animate-bounce-slow {
             animation: bounce-slow 3s infinite ease-in-out;
         }
+
+        /* NEW: Explosion Animation */
+        @keyframes explode {
+            0% { transform: scale(1); color: #F97316; }
+            40% { transform: scale(1.1) rotate(-2deg); color: #F97316; }
+            50% { transform: scale(1.4) rotate(0deg); color: #EF4444; text-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+            60% { transform: scale(1.1) rotate(2deg); color: #EF4444; }
+            100% { transform: scale(1); color: #F97316; text-shadow: none; }
+        }
+
+        .explode-delayed {
+            display: inline-block; /* Важно для трансформации */
+            animation: explode 0.8s ease-out;
+            animation-delay: 7s;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-300 antialiased leading-relaxed overflow-x-hidden relative">
@@ -162,11 +177,16 @@
             
             <div class="relative">
                 <p class="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-2 md:px-0">
-                    Вся правда о висцеральном жире. Посмотри это короткое видео (5 мин), чтобы понять, какая <span class="text-orange-500 font-semibold whitespace-nowrap">«бомба замедленного действия»</span> тикает внутри твоего организма.
+                    <!-- 
+                       UPDATED: 
+                       Добавлен класс 'explode-delayed' для эффекта взрыва через 7 секунд 
+                    -->
+                    Вся правда о висцеральном жире. Посмотри это короткое видео (5 мин), чтобы понять, какая <span class="text-orange-500 font-semibold whitespace-nowrap explode-delayed">«бомба замедленного действия»</span> тикает внутри твоего организма.
                 </p>
 
                 <!-- Hand-drawn Arrow (Decorative) -->
-                <div class="absolute -bottom-6 -right-2 md:-right-12 md:bottom-0 w-16 h-16 md:w-24 md:h-24 pointer-events-none opacity-80 animate-bounce-slow text-orange-500/80 hidden xs:block">
+                <!-- Adjusted positioning to point better at the video -->
+                <div class="absolute -bottom-8 -right-4 md:-right-16 md:-bottom-10 w-16 h-16 md:w-24 md:h-24 pointer-events-none opacity-80 animate-bounce-slow text-orange-500/80 hidden xs:block">
                     <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20,10 C40,5 60,20 55,40 C50,60 30,50 35,30 C40,15 70,10 80,40 C85,60 70,80 50,90" />
                         <path d="M45,80 L50,90 L60,82" />
@@ -175,7 +195,12 @@
             </div>
 
             <!-- Video Player: VK VIDEO INTEGRATION -->
-            <div id="video-wrapper-vk" class="relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden cursor-pointer" onclick="loadVkVideo(this)">
+            <!-- 
+                UPDATED MARGINS: 
+                Было: mt-12 md:mt-20
+                Стало: mt-16 md:mt-24 (немного увеличил отступ для большего "воздуха")
+            -->
+            <div id="video-wrapper-vk" class="mt-16 md:mt-24 relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden cursor-pointer" onclick="loadVkVideo(this)">
                 
                 <!-- Placeholder -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-black">
