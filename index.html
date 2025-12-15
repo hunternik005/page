@@ -49,7 +49,7 @@
                     animation: {
                         'pulse-custom': 'pulse-glow 2s infinite',
                         'blob': 'blob 10s infinite',
-                        'wiggle': 'wiggle 3s ease-in-out infinite', // Добавлена анимация покачивания
+                        'wiggle': 'wiggle 3s ease-in-out infinite',
                     },
                     keyframes: {
                         'pulse-glow': {
@@ -62,7 +62,6 @@
                             '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
                             '100%': { transform: 'translate(0px, 0px) scale(1)' },
                         },
-                        // Ключевые кадры для покачивания
                         'wiggle': {
                             '0%, 100%': { transform: 'rotate(-2deg)' },
                             '50%': { transform: 'rotate(2deg)' },
@@ -107,11 +106,10 @@
             transform: translateY(0);
         }
 
-        /* Class for delayed appearance */
         .fade-in-delayed {
-            opacity: 0; /* Изначально скрыто */
+            opacity: 0;
             animation: fadeInUpDelayed 1s ease-out forwards;
-            animation-delay: 30s; /* Задержка 30 секунд */
+            animation-delay: 30s;
         }
 
         @keyframes fadeInUpDelayed {
@@ -125,28 +123,12 @@
             }
         }
 
-        /* Анимация для стрелочки */
         @keyframes bounce-slow {
             0%, 100% { transform: translateY(0) rotate(12deg); }
             50% { transform: translateY(10px) rotate(12deg); }
         }
         .animate-bounce-slow {
             animation: bounce-slow 3s infinite ease-in-out;
-        }
-
-        /* NEW: Explosion Animation */
-        @keyframes explode {
-            0% { transform: scale(1); color: #F97316; }
-            40% { transform: scale(1.1) rotate(-2deg); color: #F97316; }
-            50% { transform: scale(1.4) rotate(0deg); color: #EF4444; text-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
-            60% { transform: scale(1.1) rotate(2deg); color: #EF4444; }
-            100% { transform: scale(1); color: #F97316; text-shadow: none; }
-        }
-
-        .explode-delayed {
-            display: inline-block; /* Важно для трансформации */
-            animation: explode 0.8s ease-out;
-            animation-delay: 7s;
         }
     </style>
 </head>
@@ -164,11 +146,6 @@
         <section class="text-center space-y-6 md:space-y-8 reveal relative">
             <h1 class="text-2xl xs:text-3xl md:text-5xl font-black text-white uppercase tracking-tight leading-tight">
                 Почему живот не уходит, 
-                <!-- 
-                   UPDATED:
-                   1. animate-wiggle: Добавлена анимация.
-                   2. sm:inline-block: Изменено с inline на inline-block, чтобы трансформация (rotate) работала корректно.
-                -->
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-400 block sm:inline-block animate-wiggle origin-bottom">
                     даже если ты качаешь пресс
                 </span> 
@@ -177,15 +154,18 @@
             
             <div class="relative">
                 <p class="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-2 md:px-0">
-                    <!-- 
-                       UPDATED: 
-                       Добавлен класс 'explode-delayed' для эффекта взрыва через 7 секунд 
-                    -->
-                    Вся правда о висцеральном жире. Посмотри это короткое видео (5 мин), чтобы понять, какая <span class="text-orange-500 font-semibold whitespace-nowrap explode-delayed">«бомба замедленного действия»</span> тикает внутри твоего организма.
+                    Вся правда о висцеральном жире. Посмотри это короткое видео (5 мин), чтобы понять, какая 
+                    <span class="text-red-600 font-bold whitespace-nowrap drop-shadow-[0_0_10px_rgba(220,38,38,0.8)] inline-flex items-center gap-1">
+                        «бомба замедленного действия»
+                        <!-- Bomb Icon SVG (Moved outside quotes) -->
+                        <svg class="w-5 h-5 md:w-6 md:h-6 inline-block mb-0.5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.0002 2.25195L11.9727 4.25243C8.19638 4.61933 5.25024 7.80628 5.25024 11.702C5.25024 15.8146 8.58755 19.152 12.7002 19.152C16.8129 19.152 20.1502 15.8146 20.1502 11.702C20.1502 7.80628 17.2041 4.61933 13.4278 4.25243L13.4002 2.25195C12.9336 2.25195 12.4669 2.25195 12.0002 2.25195ZM11.0002 2.10195C10.0002 1.60195 10.0002 0.201953 12.7002 0.201953C14.0002 0.201953 15.0002 1.20195 15.4002 2.10195L13.4002 2.25195L12.0002 2.25195L11.0002 2.10195ZM17.2002 5.20195L18.7002 3.70195L20.1002 5.10195L18.6002 6.60195C18.1751 6.08253 17.708 5.61529 17.2002 5.20195ZM12.7002 6.70195C15.4617 6.70195 17.7002 8.94053 17.7002 11.702C17.7002 14.4634 15.4617 16.702 12.7002 16.702C9.93882 16.702 7.70024 14.4634 7.70024 11.702C7.70024 8.94053 9.93882 6.70195 12.7002 6.70195Z" />
+                        </svg>
+                    </span> 
+                    тикает внутри твоего организма.
                 </p>
 
                 <!-- Hand-drawn Arrow (Decorative) -->
-                <!-- Adjusted positioning to point better at the video -->
                 <div class="absolute -bottom-8 -right-4 md:-right-16 md:-bottom-10 w-16 h-16 md:w-24 md:h-24 pointer-events-none opacity-80 animate-bounce-slow text-orange-500/80 hidden xs:block">
                     <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20,10 C40,5 60,20 55,40 C50,60 30,50 35,30 C40,15 70,10 80,40 C85,60 70,80 50,90" />
@@ -194,15 +174,10 @@
                 </div>
             </div>
 
-            <!-- Video Player: VK VIDEO INTEGRATION -->
-            <!-- 
-                UPDATED MARGINS: 
-                Было: mt-12 md:mt-20
-                Стало: mt-16 md:mt-24 (немного увеличил отступ для большего "воздуха")
-            -->
-            <div id="video-wrapper-vk" class="mt-16 md:mt-24 relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden cursor-pointer" onclick="loadVkVideo(this)">
+            <!-- Video Player: WISTIA INTEGRATION -->
+            <div id="video-wrapper-wistia" class="mt-16 md:mt-24 relative w-full aspect-video bg-black rounded-xl border border-gray-700 shadow-glow-teal overflow-hidden cursor-pointer" onclick="loadWistiaVideo(this)">
                 
-                <!-- Placeholder -->
+                <!-- Placeholder (Your Custom Design) -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-black">
                     <!-- Play Button -->
                     <div class="relative z-10">
@@ -222,10 +197,7 @@
             </div>
         </section>
 
-        <!-- 
-            WRAPPER FOR DELAYED CONTENT 
-            Все, что внутри этого блока, появится через 30 секунд.
-        -->
+        <!-- DELAYED CONTENT WRAPPER -->
         <div class="fade-in-delayed space-y-10 md:space-y-16">
             
             <!-- Primary CTA Button -->
@@ -362,41 +334,56 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // 2. VIDEO LOADER - VK VIDEO VERSION (FORCED + HASH)
-        function loadVkVideo(container) {
-            // Если iframe уже есть, ничего не делаем
-            if (container.querySelector('iframe')) return;
+        // 2. VIDEO LOADER - WISTIA VERSION (USER PROVIDED CODE)
+        function loadWistiaVideo(container) {
+            // Если плеер уже есть, ничего не делаем
+            if (container.querySelector('wistia-player')) return;
 
-            // VK Параметры (обновлены из вашего кода вставки)
-            const oid = '-156682393'; // ID владельца
-            const id = '456239029';   // ID видео
+            const mediaId = '044pwmefqa';
             
-            // 👇 HASH из вашего кода вставки (ключ для приватного видео)
-            const hash = 'edfa152da97dcead'; 
+            // 1. Подключаем скрипт player.js
+            if (!document.querySelector('script[src*="fast.wistia.com/player.js"]')) {
+                const s1 = document.createElement('script');
+                s1.src = "https://fast.wistia.com/player.js";
+                s1.async = true;
+                document.head.appendChild(s1);
+            }
             
-            // Формируем ссылку
-            let srcUrl = `https://vkvideo.ru/video_ext.php?oid=${oid}&id=${id}&hd=3&autoplay=1&js_api=1`;
-            
-            // Добавляем hash
-            if (hash) {
-                srcUrl += `&hash=${hash}`;
+            // 2. Подключаем скрипт конкретного видео
+            if (!document.querySelector(`script[src*="fast.wistia.com/embed/${mediaId}.js"]`)) {
+                const s2 = document.createElement('script');
+                s2.src = `https://fast.wistia.com/embed/${mediaId}.js`;
+                s2.async = true;
+                s2.type = "module";
+                document.head.appendChild(s2);
             }
 
-            const iframeHTML = `
-                <iframe 
-                    src="${srcUrl}" 
-                    width="100%" 
-                    height="100%" 
-                    frameborder="0" 
-                    allow="clipboard-write; autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" 
-                    webkitAllowFullScreen 
-                    mozallowfullscreen 
-                    allowFullScreen 
-                    style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"
-                ></iframe>
+            // 3. Добавляем стили для превью (Swatch)
+            if (!document.getElementById(`wistia-style-${mediaId}`)) {
+                const style = document.createElement('style');
+                style.id = `wistia-style-${mediaId}`;
+                style.textContent = `
+                    wistia-player[media-id='${mediaId}']:not(:defined) { 
+                        background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/${mediaId}/swatch'); 
+                        display: block; 
+                        filter: blur(5px);
+                        width: 100%;
+                        height: 100%;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // 4. Вставляем сам тег плеера
+            container.innerHTML = `
+                <wistia-player 
+                    media-id="${mediaId}" 
+                    aspect="1.7777777777777777" 
+                    style="width: 100%; height: 100%; display: block;"
+                ></wistia-player>
             `;
 
-            container.innerHTML = iframeHTML;
+            // Убираем курсор и обработчик клика
             container.classList.remove('cursor-pointer');
             container.onclick = null;
         }
